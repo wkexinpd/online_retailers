@@ -72,10 +72,6 @@ export const constantRoutes = [
   }
 ]
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
 export const asyncRoutes = [
   {
     path: "/person",
@@ -110,6 +106,12 @@ export const asyncRoutes = [
         component: () => import('@/views/order/orderManger'),
         name: 'orderManger',
         meta: { title: '订单管理',icon: 'list', roles: [3, 4] }
+      },
+      {
+        path: '/order/orderDisplay',
+        component: () => import('@/views/user/order/orderCheck'),
+        name: 'orderManger',
+        meta: { title: '我的订单',icon: 'list', roles: [1, 2] }
       }
     ]
   },

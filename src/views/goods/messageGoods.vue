@@ -55,7 +55,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column type="index"></el-table-column>
+<!--      <el-table-column type="index"></el-table-column>-->
       <el-table-column label="商品名称" prop="name" align="center"></el-table-column>
       <el-table-column label="商品展示" align="center">
         <template slot-scope="{row}">
