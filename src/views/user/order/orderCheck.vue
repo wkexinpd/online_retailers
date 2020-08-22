@@ -5,6 +5,26 @@
         <el-select v-model="status" placeholder="订单状态" clearable style=" margin-left: 3px;width: 110px" class="filter-item" size="small">
           <el-option v-for="item in typeOrderOptions" :key="item.id" :label="item.status" :value="item.id" />
         </el-select>
+        <el-date-picker
+          v-model="orderQuery.startTime"
+          type="date"
+          placeholder="开始日期"
+          style="margin-left: 3px;"
+          format="yyyy 年 MM 月 dd 日"
+          value-format="yyyy-MM-dd"
+          size="small"
+          class="filter-item">
+        </el-date-picker>
+        <el-date-picker
+          v-model="orderQuery.endTime"
+          type="date"
+          placeholder="截止日期"
+          style="margin-left: 3px;"
+          format="yyyy 年 MM 月 dd 日"
+          value-format="yyyy-MM-dd"
+          size="small"
+          class="filter-item">
+        </el-date-picker>
         <el-button class="filter-item" style="margin-left: 5px;" type="primary" size="small" icon="el-icon-search" @click="handleFilter">
           搜索
         </el-button>
@@ -13,13 +33,17 @@
         <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
           导出用户订单表
         </el-button>
-        <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-          打印报表
-        </el-button>
+<!--        <router-link target="_blank" to="/order/download">-->
+          <el-button class="filter-item" type="primary" icon="el-icon-download" @click="toPrint">
+            打印报表
+          </el-button>
+<!--        </router-link>-->
       </div>
 
     </div>
     <el-table
+      id="print"
+      key="1"
       v-loading="listLoading"
       :data="userOrderList"
       fit
@@ -50,13 +74,10 @@
         </template>
       </el-table-column>
       <el-table-column label="下单时间" prop="createTime" align="center" width="100"/>
-      <el-table-column label="操作" align="center" width="230" fixed="right" class-name="small-padding fixed-width">
+      <el-table-column v-if="" label="操作" align="center" width="230" fixed="right" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleOrderUpdate(row)">
             编辑
-          </el-button>
-          <el-button type="warning" size="mini" @click="">
-            打印报表
           </el-button>
           <el-popconfirm
             title="确定删除用户的订单吗？"
@@ -104,7 +125,6 @@
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog title="打印报表"></el-dialog>
   </div>
 </template>
 
@@ -147,6 +167,10 @@
             status: '交易完成'
           },
         ],
+        orderQuery:{
+          startTime: '',
+          endTime: ''
+        }
       }
     },
     computed: {
@@ -161,7 +185,7 @@
       getUserOrderList(){
         this.listLoading = true
         let status = this.status===null?0:this.status
-        userGetOrder(this.page,this.limit,this.id,status,false).then((response)=>{
+        userGetOrder(this.page,this.limit,this.id,status,false,this.orderQuery).then((response)=>{
           this.userOrderList = response.data.order
           this.total = response.data.total
           setTimeout(() => {
@@ -217,6 +241,18 @@
           return v[j]
         }))
       },
+      toPrint() {
+        const {href} = this.$router.resolve({
+          path: '/order/download',
+          name: 'download',
+          query: {
+            startTime: this.orderQuery.startTime,
+            endTime: this.orderQuery.endTime,
+            status: this.status
+          }
+        })
+        window.open(href,'_blank')
+      }
     }
   }
 </script>

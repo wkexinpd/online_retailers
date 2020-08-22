@@ -20,6 +20,8 @@ import './assets/iconfont/iconfont.css'
 
 import * as filters from './filters' // global filters
 
+import Print from 'vue-print-nb'
+Vue.use(Print);
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium',

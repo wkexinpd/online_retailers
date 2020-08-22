@@ -115,6 +115,11 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/order/download',
+    component: () => import('@/views/user/order/download'),
+    hidden: true
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

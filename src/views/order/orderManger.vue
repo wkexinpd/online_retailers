@@ -152,7 +152,7 @@
       getOrderDataList(){
         this.listLoading = true
         let status = this.status===null?0:this.status
-        userGetOrder(this.page,this.limit,undefined,status,true).then(response => {
+        userGetOrder(this.page,this.limit,undefined,status,true,{}).then(response => {
           let list = response.data.order
           let arr = []
           list.map((item,index) => {

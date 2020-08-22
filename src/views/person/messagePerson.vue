@@ -33,7 +33,7 @@
       </el-button>
     </div>
       <el-table
-        :key="tableKey"
+        key="1"
         v-loading="listLoading"
         :data="list"
         border

@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function userGetOrder(page,limit,u_id,status,isAdmin) {
+export function userGetOrder(page,limit,u_id,status,isAdmin,data) {
   return request({
-    url: `/shop-impl-order/getUserGetOrderByStatus?page=${page}&limit=${limit}&u_id=${u_id}&status=${status}&isAdmin=${isAdmin}`,
-    method: 'get'
+    url: `/shop-impl-order/GetOrder?page=${page}&limit=${limit}&u_id=${u_id}&status=${status}&isAdmin=${isAdmin}`,
+    method: 'post',
+    data
   })
 }
 
