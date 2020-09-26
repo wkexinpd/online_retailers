@@ -37,17 +37,29 @@ module.exports = {
       errors: true
     },
     proxy: {
+      // '^/shop-impl-goods':{
+      //   target: 'http://ruiwen.nat300.top',
+      //   changeOrigin: true
+      // },
+      // '^/shop-impl-order':{
+      //   target: 'http://ruiwen.nat300.top',
+      //   changeOrigin: true
+      // },
+      // '^/shop-impl-member':{
+      //   target: 'http://ruiwen.nat300.top',
+      //   changeOrigin: true
+      // },
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://127.0.0.1:${port}/mock`,
+        target: `http://49.233.7.158/`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
       }
     },
-    after: require('./mock/mock-server.js')
+    // after: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

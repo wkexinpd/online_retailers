@@ -83,7 +83,7 @@
       async getUserOrderList(){
         this.listLoading = true
         await userGetOrder(1,20,this.id,this.status,false,this.orderList).then((response)=>{
-          this.userOrderList = response.data.order
+          this.userOrderList = response.data.orderList
           this.total = response.data.total
           this.listLoading = false
           // setTimeout(() => {

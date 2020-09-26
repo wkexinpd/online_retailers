@@ -8,18 +8,21 @@ export function getPersonList(data,page,limit) {
   })
 }
 
-export function updatePerson(data){
+export function updatePerson(userMessageDTO){
+  // console.log(data);
+  // let userMessageDTO = data
   return request({
-    url: `/shop-impl-member/update`,
+    url: `/shop-impl-member/updateUser`,
     method: 'post',
-    data
+    data:userMessageDTO
+    // userMessageDTO:data
   })
 }
 
 export function deletePerson(id) {
   return request({
-    url: `/shop-impl-member/delete`,
-    method: 'get',
-    params: {id}
+    url: `/shop-impl-member/deleteUser?userId=${id}`,
+    method: 'delete',
+    // params: {id}
   })
 }

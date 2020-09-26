@@ -13,7 +13,7 @@ const state = {
   sex: '男',
   role: [],
   createTime: '',
-  updateTime: ''
+  // updateTime: ''
 }
 
 const mutations = {
@@ -44,9 +44,9 @@ const mutations = {
   SET_CREATETIME: (state,createTime)=>{
     state.createTime = createTime
   },
-  SET_UPDATETIME: (state,updateTime) => {
-    state.updateTime = updateTime
-  }
+  // SET_UPDATETIME: (state,updateTime) => {
+  //   state.updateTime = updateTime
+  // }
 }
 
 const actions = {
@@ -66,7 +66,7 @@ const actions = {
     }
     return new Promise((resolve, reject) => {
       login({ phone: phone, code: code, type:type, loginType: "PC" }).then(response => {
-        // console.log(response);
+        // console.log(response.data.token);
         const { data } = response
         // const {username, id, phone, type, typeId, sex} = data.user
         // sessionStorage.setItem('typeId',JSON.parse(typeId))
@@ -101,7 +101,7 @@ const actions = {
         if(!data){
           reject('验证失败，请再次登录')
         }
-        const {username, id, phone, type, typeId, sex, createTime,updateTime} = data.user
+        const {username, id, phone, type, typeId, sex, createTime} = data.user
         // console.log(data);
         sessionStorage.setItem('typeId',JSON.stringify(typeId))
         const arr = [JSON.parse(sessionStorage.getItem('typeId'))]
@@ -113,7 +113,7 @@ const actions = {
         commit('SET_TYPEID',typeId)
         commit('SET_SEX',sex)
         commit('SET_CREATETIME',createTime)
-        commit('SET_UPDATETIME',updateTime)
+        // commit('SET_UPDATETIME',updateTime)
         commit('SET_ROLE', arr)
         resolve(arr)
       }).catch(error=>{

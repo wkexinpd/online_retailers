@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getGoodsDataList(data, page, limit) {
   return request({
-    url: `/shop-impl-goods/showGoods?page=${page}&limit=${limit}`,
+    url: `/shop-impl-goods/getAllGoods?page=${page}&limit=${limit}`,
     method: 'post',
     data
   })
@@ -15,56 +15,57 @@ export function getTree() {
   })
 }
 
-export function addCategory(data) {
+export function addCategory(categoryMessageDTO) {
   return request({
     url: `/shop-impl-goods/addCategory`,
     method: 'post',
-    data
+    data:categoryMessageDTO
   })
 }
 
 export function addGood(data) {
   return request({
-    url: `/shop-impl-goods/addGood`,
+    url: `/shop-impl-goods/addGoods`,
     method: 'post',
     data
   })
 }
 
-export function addSpec(data) {
+export function addSpec(specDTO) {
   return request({
     url: `/shop-impl-goods/addSpec`,
     method: 'post',
-    data
+    data:specDTO
   })
 }
 
-export function updateGoods(data) {
+export function updateGoods(goodsMessageDTO) {
+  // console.log(goodsMessageDTO);
   return request({
-    url: '/shop-impl-goods/updateGood',
+    url: '/shop-impl-goods/updateGoods',
     method: 'post',
-    data
+    data:goodsMessageDTO
   })
 }
 
 export function deleteGood(good_id) {
   return request({
-    url: `/shop-impl-goods/deleteGood?good_id=${good_id}`,
+    url: `/shop-impl-goods/deleteGoods?id=${good_id}`,
     method: 'delete'
   })
 }
 
 export function deleteSpec(id) {
   return request({
-    url: `/shop-impl-goods/deleteSpec?id=${id}`,
+    url: `/shop-impl-goods/deleteSpec?specId=${id}`,
     method: 'delete'
   })
 }
 
-export function updateSpec(data) {
+export function updateSpec(specDTO) {
   return request({
     url: `/shop-impl-goods/updateSpec`,
     method: 'post',
-    data
+    data:specDTO
   })
 }

@@ -35,9 +35,9 @@
       <el-table-column type="expand">
         <template slot-scope="{row}">
           <li>商品分类：</li>
-          <span style="padding-left: 80px;display: flex;flex-direction: row;align-items: center">{{row.categoryMessage.name}}<img :src="row.categoryMessage.bannerUrl" alt="" width="60px" style="padding-left: 10px"></span>
+          <span style="padding-left: 80px;display: flex;flex-direction: row;align-items: center">{{row.categoryDTO.name}}<img :src="row.categoryDTO.bannerUrl" alt="" width="60px" style="padding-left: 10px"></span>
           <li>商品规格：</li>
-          <div style="padding-left: 80px;display: flex;flex-direction: row;align-items: center;line-height: 32px;" v-for="item in row.specificationDTOS">
+          <div style="padding-left: 80px;display: flex;flex-direction: row;align-items: center;line-height: 32px;" v-for="item in row.spectficationDTOS">
             <el-input v-if="!item.status" v-model="item.value" class="edit-input" size="mini" style="width:150px;"/>
             <span v-else>{{item.value}}</span>
             <img :src="item.picUrl" alt="" width="40px" style="margin: 0 30px;">
@@ -99,7 +99,7 @@
         <el-form-item label="分类名称" prop="name" required>
           <el-input v-model="dialogCategoryForm.name" />
         </el-form-item>
-        <el-form-item label="分类等级" prop="introduce" required>
+        <el-form-item label="分类等级" prop="level" required>
 <!--          <el-input v-model="dialogGoodsForm.introduce" />-->
           <el-radio v-model="dialogCategoryForm.level" label="L1">一级</el-radio>
           <el-radio v-model="dialogCategoryForm.level" label="L2">二级</el-radio>
@@ -107,8 +107,8 @@
         <el-form-item label="上传图标" prop="iconUrl">
           <el-upload
             class="avatar-uploader"
-            action="http://ruiwen.nat300.top/shop-impl-oss/imgInput"
-            :show-file-list="true"
+            action="http://49.233.7.158/shop-impl-oss/fileUpload"
+            :show-file-list="false"
             :on-success="handleIconUrlCardPreview">
             <img v-if="dialogCategoryForm.iconUrl" :src="dialogCategoryForm.iconUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -147,8 +147,8 @@
         <el-form-item label="商品展示" prop="picture">
           <el-upload
             class="avatar-uploader"
-            action="http://ruiwen.nat300.top/shop-impl-oss/imgInput"
-
+            action="http://49.233.7.158/shop-impl-oss/fileUpload"
+            :show-file-list="false"
             :on-success="handlePictureCardPreview">
             <img v-if="dialogGoodsForm.picture" :src="dialogGoodsForm.picture" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -206,8 +206,8 @@
         <el-form-item label="规格展示" prop="picUrl">
           <el-upload
             class="avatar-uploader"
-            action="http://ruiwen.nat300.top/shop-impl-oss/imgInput"
-            :show-file-list="true"
+            action="http://49.233.7.158/shop-impl-oss/fileUpload"
+            :show-file-list="false"
             :on-success="handlePicUrlCardPreview">
             <img v-if="dialogSpecForm.picUrl" :src="dialogSpecForm.picUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -374,10 +374,10 @@
         })
       },
       handlePictureCardPreview(res) {
-        this.dialogGoodsForm.picture = res.data.url;
+        this.dialogGoodsForm.picture = res.message;
       },
       handleIconUrlCardPreview(res){
-        this.dialogCategoryForm.iconUrl = res.data.url;
+        this.dialogCategoryForm.iconUrl = res.message;
         console.log(this.dialogCategoryForm.iconUrl);
       },
       createData(){
@@ -427,7 +427,7 @@
         })
       },
       handlePicUrlCardPreview(res){
-        this.dialogSpecForm.picUrl = res.data.url;
+        this.dialogSpecForm.picUrl = res.message;
       },
     //  编辑操作
       updateGoodsData(){
@@ -446,6 +446,7 @@
       },
       handleSpecUpdate(item,id){
         // this.specUpdate=false
+        console.log(item);
         item.status = true
         updateSpec({...item,goods_id:id}).then(()=>{
           this.$message({

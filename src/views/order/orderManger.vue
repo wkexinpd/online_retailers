@@ -17,7 +17,7 @@
     >
       <el-table-column label="订单号" prop="id" align="center" width="180"></el-table-column>
       <el-table-column label="商品名称" prop="goodName" align="center" width="150"></el-table-column>
-      <el-table-column label="规格名称" prop="gSName" align="center" width="150"></el-table-column>
+      <el-table-column label="规格名称" prop="gsname" align="center" width="150"></el-table-column>
       <el-table-column label="商品图片" align="center">
         <template slot-scope="{row}">
           <img :src="row.picture" width="60px">
@@ -107,7 +107,7 @@
 
 <script>
   import Pagination from '@/components/Pagination'
-  import {userGetOrder,updateOrderMessage,updateOrderAddress,deleteOrder} from '@/api/order'
+  import {userGetOrder,updateOrderMessage,updateOrderAddress,deleteOrder,getAllStatus} from '@/api/order'
   export default {
     name: "orderManger",
     components: {Pagination},
@@ -120,20 +120,7 @@
         page: 1,
         limit: 10,
         total: 0,
-        typeOrderOptions: [
-          {
-            id: 1,
-            status: '双方议价'
-          },
-          {
-            id: 2,
-            status: '买家提货'
-          },
-          {
-            id: 3,
-            status: '交易完成'
-          },
-        ],
+        typeOrderOptions: [],
         dialogOrderList:{
           beforePrice: 0,
           afterPrice: 0,
@@ -147,13 +134,14 @@
     },
     created() {
       this.getOrderDataList()
+      this.getStatus()
     },
     methods:{
       getOrderDataList(){
         this.listLoading = true
         let status = this.status===null?0:this.status
         userGetOrder(this.page,this.limit,undefined,status,true,{}).then(response => {
-          let list = response.data.order
+          let list = response.data.orderList
           let arr = []
           list.map((item,index) => {
             arr.push(
@@ -165,6 +153,11 @@
           setTimeout(() => {
             this.listLoading = false
           }, 0.5 * 1000)
+        })
+      },
+      getStatus(){
+        getAllStatus().then(response => {
+          this.typeOrderOptions = response.data.status
         })
       },
       handleOrderUpdate(row){
@@ -209,12 +202,13 @@
         this.$refs['dialogOrderList'].validate((valid) => {
           if (valid) {
             updateOrderMessage({afterPrice:parseInt(this.dialogOrderList.afterPrice),beforePrice:parseInt(this.dialogOrderList.beforePrice),id:this.dialogOrderList.id,statusId:this.dialogOrderList.statusId,status:this.typeOrderOptions[this.dialogOrderList.statusId-1].status,version:this.dialogOrderList.version}).then(()=>{
+
+              this.dialogOrderFormVisible = false
+              this.getOrderDataList()
               this.$message({
                 message: '编辑成功',
                 type: 'success'
               })
-              this.dialogOrderFormVisible = false
-              this.getGoodsDataList()
             })
           }
         })

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/shop-impl-member/web/login',
+    url: '/shop-impl-member/login',
     method: 'post',
     data
   })
@@ -25,15 +25,14 @@ export function getInfo(token) {
 
 export function sendSms(phone) {
   return request({
-    url: '/shop-impl-member/web/sendSms',
-    method: 'post',
-    params: {phone}
+    url: `/shop-impl-member/sendSms?phone=${phone}`,
+    method: 'post'
   })
 }
 
 export function logout(token) {
   return request({
-    url: '/shop-impl-member/web/logout',
+    url: '/shop-impl-member/logout',
     method: 'post',
     params: {token}
   })
@@ -41,9 +40,8 @@ export function logout(token) {
 
 export function registerSendSms(phone) {
   return request({
-    url: '/shop-impl-member/web/register/sendSms',
-    method: 'post',
-    params: {phone}
+    url: `/shop-impl-member/registerSendSms?phone=${phone}`,
+    method: 'post'
   })
 }
 

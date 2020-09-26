@@ -146,7 +146,7 @@
         tableKey: 0,
         listLoading: true,
         list:null,
-        typeOptions: [{id:1,type:'普通用户'}, {id:2,type:'会员'}, {id:3,type:'客服'}],
+        typeOptions: [{id:1,type:'普通用户'}, {id:2,type:'会员'}, {id:3,type:'客服'},{id:4,type: '卖家'}],
         total: 0,
         dialogFormVisible: false,
         dialogStatus:'',
@@ -166,7 +166,7 @@
           type:'',
           createTime:''
         },
-        dialogTypeOptions: [{id:1,type:'普通用户'}, {id:2,type:'会员'}, {id:3,type:'客服'}]
+        dialogTypeOptions: [{id:1,type:'普通用户'}, {id:2,type:'会员'}, {id:3,type:'客服'},{id:4,type: '卖家'}]
       }
     },
     created() {
@@ -218,6 +218,7 @@
         this.$refs['dialogForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.dialogForm)
+            console.log(tempData,this.dialogForm);
             updatePerson(tempData).then(() => {
               this.getPersonList()
               this.dialogFormVisible = false

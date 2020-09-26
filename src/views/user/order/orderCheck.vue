@@ -129,7 +129,7 @@
 </template>
 
 <script>
-  import {userGetOrder, deleteOrder, updateOrderMessage} from '@/api/order'
+  import {userGetOrder, deleteOrder, updateOrderMessage, getAllStatus} from '@/api/order'
   import {mapGetters} from "vuex";
   import Pagination from "@/components/Pagination/index";
   export default {
@@ -153,20 +153,7 @@
           countyName: '',
           detailedAddress: ''
         },
-        typeOrderOptions: [
-          {
-            id: 1,
-            status: '双方议价'
-          },
-          {
-            id: 2,
-            status: '买家提货'
-          },
-          {
-            id: 3,
-            status: '交易完成'
-          },
-        ],
+        typeOrderOptions: [],
         orderQuery:{
           startTime: '',
           endTime: ''
@@ -180,17 +167,31 @@
     },
     created() {
       this.getUserOrderList()
+      this.getStatus()
     },
     methods:{
       getUserOrderList(){
         this.listLoading = true
         let status = this.status===null?0:this.status
         userGetOrder(this.page,this.limit,this.id,status,false,this.orderQuery).then((response)=>{
-          this.userOrderList = response.data.order
+          let list = response.data.orderList
+          let arr = []
+          list.map((item,index) => {
+            arr.push(
+              Object.assign(item,{detailAddress:`${item.provinceName} - ${item.cityName} - ${item.detailedAddress}`})
+            )
+          });
+          console.log(arr);
+          this.userOrderList = arr
           this.total = response.data.total
           setTimeout(() => {
             this.listLoading = false
           }, 0.5 * 1000)
+        })
+      },
+      getStatus(){
+        getAllStatus().then(response => {
+          this.typeOrderOptions = response.data.status
         })
       },
       handleFilter(){
@@ -226,8 +227,8 @@
       },
       handleDownload(){
         import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = ['订单号', '商品名称', '商品型号', '商品单价','购买数量', '议价前价格','议价后价格','优惠价格','议价状态','收货人','收货人联系方式','一级地址','二级地址','三级地址','详细地址','邮政编码','下单时间']
-          const filterVal = ['id', 'goodName', 'gsname', 'price','number', 'beforePrice','afterPrice','downPrice','status','userName','telNumber','provinceName','cityName','countyName','detailedAddress','postalCode','createTime']
+          const tHeader = ['订单号', '商品名称', '商品型号', '商品单价','购买数量', '实付款','优惠价格','议价状态','收货人','收货人联系方式','收货地址','邮政编码','下单时间']
+          const filterVal = ['id', 'goodName', 'gsname', 'price','number','afterPrice','downPrice','status','userName','telNumber','detailAddress','postalCode','createTime']
           const data = this.formatJson(filterVal)
           excel.export_json_to_excel({
             header: tHeader,
